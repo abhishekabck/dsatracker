@@ -68,12 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const isDarkMode = document.body.classList.contains("dark-mode");
         localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-        circle.style.marginLeft = isDarkMode ? "-20px" : "0px";
+        // circle.style.left = isDarkMode ? "2.5px" : "2.5px";
     });
 
     // Load saved theme on page load
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
-        circle.style.marginLeft = "-20px";
+        // circle.style.left = "2.5px";
     }
 });
