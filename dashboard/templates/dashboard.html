@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DSA Tracker</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <section class="wrapper">
+        <div style="display:flex; flex-direction:row;justify-self: center; gap: 60px;">
+            <h1 style="text-align: center;">DSA Tracker For Abhishek</h1>
+            <button id="cm-btn"><span id="cm-btn-circle"></span></button>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: space-evenly;">
+            <div class="count-tags">
+                <h2>Total Questions</h2>
+                <span class="tag-number">{{ total_questions }}</span>
+            </div>
+            <div class="count-tags">
+                <h2>Solved Questions!</h2>
+                <span class="tag-number">{{total_solved}}</span>
+            </div>
+            <div class="count-tags">
+                <h2>UnSolved Questions!</h2>
+                <span class="tag-number">{{total_unsolved}}</span>
+            </div>
+        </div>
+        <div class="search_wrapper">
+            <form method="post" class="search_form">
+                {% csrf_token %}
+                <input name="search_question" type="text" class="search_input" placeholder="Search your question here..." value="{{search_question}}">
+                <button class="search_submit" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+            </form>
+        </div>
+    </section>
+    <section class="content-wrapper">
+        {% for topic in topics %}
+            <h2>{{ forloop.counter }}. {{ topic.topic_name }}</h2>
+                {% for pattern in topic.patterns %}
+                    <details style="margin-botton: 10px;">
+                        <summary>
+                            <span style="font-size:1.2rem; font-weight: bold;">
+                                Pattern - {{ pattern.pattern_name }}
+                            </span>
+                        </summary>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="sno">S.No</th>
+                                    <th style="text-align: center; padding: 8px;" colspan="2">Problems</th>
+                                    <th class="status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for question in pattern.questions %}
+                                    <tr>
+                                        <th class="sno">{{ forloop.counter }}</th>
+                                        <th class="problems" {% if question.have_url == True %}colspan = 2 style="width:70%;"{% endif %} id="problem-{{question.id}}">
+                                                <a href='{{question.question_URL | default:"#"}}' target='_blank' id="question-link-{{question.id}}">
+                                                    {{ question.question_heading }}
+                                                </a>
+                                        </th>
+                                        <th class="up-url-btn" {% if question.have_url == True %}style="display:none;"{% endif %} id="up-url-{{question.id}}">
+                                            <form onsubmit="return false;">
+                                                {% csrf_token %}
+                                                <input id="url-{{question.id}}"
+                                                        name="url"
+                                                        class="url-update"
+                                                        placeholder="Enter url"
+                                                        value="{{question.question_URL | default:''}}">
+                                                <button class="update-url-btn"
+                                                        type="button"
+                                                        onclick="updateQuestionURL({{question.id}})">⏫</button>
+                                            </form>
+                                        </th>
+                                        <th class="status">
+                                            <form>
+                                                {% csrf_token %}
+                                                <input type="checkbox"
+                                                        name="status"
+                                                        value="true"
+                                                        {% if question.solved == True %}checked{% endif %}
+                                                       onclick="updateQuestionStatus({{question.id}}, this.checked)"
+                                                >
+                                            </form>
+                                        </th>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </details>
+                <hr>
+                <br>
+            {% endfor %}
+        {% endfor %}
+        {% if topics_length == 0 %}<h4>No match found.</h4>{% endif %}
+    </section>
+</body>
+<script src="{% static 'js/script.js' %}"></script>
+</html>
