@@ -1,6 +1,6 @@
-const baseURL = "http://127.0.0.1:8000/";
+const baseURL = "http://127.0.0.1:8000/dashboard/";
 async function updateQuestionStatus(questionId, statusValue) {
-    const url = `${baseURL}dsa-tracker/update_status/${questionId}/`;
+    const url = `${baseURL}update_status/${questionId}/`;
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     try {
@@ -26,7 +26,7 @@ async function updateQuestionStatus(questionId, statusValue) {
 
 
 async function updateQuestionURL(questionId) {
-    const url = `${baseURL}dsa-tracker/update_url/${questionId}/`
+    const url = `${baseURL}update_url/${questionId}/`
     const newURL = document.getElementById(`url-${questionId}`).value;
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     try {
