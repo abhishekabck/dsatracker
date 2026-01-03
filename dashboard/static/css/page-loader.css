@@ -1,0 +1,25 @@
+#page-loader {
+    display: none;
+    position: fixed;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+    background-color: rgba(7, 6, 6, 0.75);
+}
+
+img {
+    height: 200px;
+
+}
+
+.unselectable {
+  user-select: none;        /* Standard property */
+  -webkit-user-select: none; /* For Safari/Chrome */
+  -moz-user-select: none;    /* For Firefox */
+  -ms-user-select: none;     /* For old IE/Edge */
+}

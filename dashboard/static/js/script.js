@@ -1,8 +1,42 @@
-const baseURL = "http://127.0.0.1:8000/dashboard/";
+const baseURL = "http://localhost:8000/dashboard/";
+const loader = document.getElementById('page-loader');
+let reloadStartTime = null;
+let reloadTimeout = null;
+
+function startReload() {
+    loader.style.display = "flex";
+    loader.style.zIndex = "1000";
+    reloadStartTime = Date.now();
+
+    // Clear any previous timeout
+    if (reloadTimeout) {
+        clearTimeout(reloadTimeout);
+        reloadTimeout = null;
+    }
+}
+
+function stopReload() {
+    const elapsed = Date.now() - reloadStartTime;
+    const minDuration = 1000; // 1 seconds
+
+    if (elapsed >= minDuration) {
+        // Task took longer than 3s → stop immediately
+        loader.style.display = "none";
+        loader.style.zIndex = "-1000";
+    } else {
+        // Task finished early → wait until 3s total
+        const remaining = minDuration - elapsed;
+        reloadTimeout = setTimeout(() => {
+            loader.style.display = "none";
+            loader.style.zIndex = "-1000";
+            reloadTimeout = null;
+        }, remaining);
+    }
+}
 async function updateQuestionStatus(questionId, statusValue) {
     const url = `${baseURL}update_status/${questionId}/`;
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+    await startReload();
     try {
         const response = await fetch(url, {
             method: "PUT",
@@ -22,6 +56,7 @@ async function updateQuestionStatus(questionId, statusValue) {
     } catch (error) {
         console.error("Network error:", error);
     }
+    stopReload();
 }
 
 

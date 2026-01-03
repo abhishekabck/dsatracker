@@ -5,8 +5,13 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/page-loader.css' %}">
 </head>
 <body>
+    <section id="page-loader">
+        <img id="loader-img" class="unselectable" src="{%static 'images/fade-stagger-squares.svg' %}">
+    </section>
+
     <section class="wrapper">
         <div style="display:flex; flex-direction:row;justify-content: center; gap: 60px;">
             <h1 style="text-align: center;">DSA Tracker For Abhishek</h1>
